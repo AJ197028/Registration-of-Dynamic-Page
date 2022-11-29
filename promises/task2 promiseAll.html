@@ -1,0 +1,121 @@
+
+<html>
+    <script>
+      const posts = [
+        // { title: "Post 1", body: "This is first post" },
+        // { title: "Post 2", body: "this is second post" },
+      ];
+      
+      function getPosts() {
+        setTimeout(() => {
+          let output = "";
+          posts.forEach((post, index) => {
+            output += `<li>${post.title} --last updated ${~~((new Date().getTime() - post.createdAt) / 1000)} seconds ago </li>`;
+          });
+          document.body.innerHTML = output;
+        }, 1000);
+      }
+      function createpost(post) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            //posts.push(post);
+            const error = false;
+
+            if (!error) {
+              resolve(posts.push({ ...post, createdAt: new Date().getTime() }))
+            } 
+            else {
+              reject("something went wrong");
+            }
+          })
+        });
+      }
+
+      function deletePost() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            let error = false;
+            if (posts.length === 0) {
+              error = true;
+            }
+            if (!error) {
+              resolve(posts.pop());
+            } else {
+              reject("Error: Array is empty now!");
+            }
+          }, 2000);
+          // console.log('Done Deleting')
+        });
+      }
+
+       //==============================promise.all======================
+
+       function updateLastUserActivityTime() {
+          return new Promise((resolve, reject) => {
+          setTimeout(() => {
+
+          posts.createdAt = new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+          resolve(posts.createdAt)
+          //console.log(posts.createdAt)
+          }, 1000);
+
+          })
+
+        }
+      function userupdatesPost(){
+        Promise.all([createpost, updateLastUserActivityTime])
+        .then((values) => console.log(values)).catch(err => console.log(err))
+        //console.log(posts)
+      }
+
+      updateLastUserActivityTime().then(userupdatesPost)
+      userupdatesPost()
+
+      createpost({ title: "Post 1", body: "this is 1 post" }) 
+        .then(getPosts)
+        .catch((err) => console.log(err));
+
+      createpost({ title: "Post 2", body: "this is 2 post" }) 
+        .then(getPosts)
+        .catch((err) => console.log(err));
+
+      createpost({ title: "Post 3", body: "this is 3 post" }) 
+        .then(getPosts)
+        .catch((err) => console.log(err));
+
+      createpost({ title: "Post 4", body: "this is fourth post" })
+        .then(getPosts, 2000)
+        // .catch((err) => console.log(err))
+        .then(deletePost, 1000).then(getPosts,1000)
+
+
+      //==========================================
+    //Why on Earth do we need promise.all ?
+
+    //   //The Promise.all() method is actually a method of Promise object there is three promices and they have values respectvily 
+    //   //so if you want that all three promises run parally so you have to use promise.all this will return a sigle promise of array 
+    // p1 = Promise.resolve(50);
+    // p2 = 200
+    // p3 = new Promise(function(resolve, reject) {
+    //     setTimeout(resolve, 100, 'geek');
+    // });
+ 
+    // Promise.all([p1, p2, p3]).then(function(values) {
+    //     console.log(values);
+    // });
+
+
+    //QWhy are promises better than callbacks?
+
+    //They can handle multiple asynchronous operations easily and provide better error handling than callbacks and events.
+
+
+    //Q Write a short answer on callback vs promises. 
+    //callback function is passed as an argument to another function 
+    //whereas Promise is something that is achieved or completed in the future. In JavaScript,
+    // a promise is an object and we use the promise constructor to initialize a promise.
+
+
+    </script>
+  </body>
+</html>
