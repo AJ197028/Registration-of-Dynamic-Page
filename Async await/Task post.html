@@ -1,0 +1,77 @@
+
+<html>
+    <script>
+        
+        const posts = [];
+      
+        function getPosts() {
+            setTimeout(() => {
+            let output = "";
+            posts.forEach((post, index) => {
+                output += `<li>${post.title} --last updated ${~~((new Date().getTime() - post.createdAt) / 1000)} seconds ago </li>`;
+            });
+            document.body.innerHTML = output;
+            }, 1000);
+        }
+
+        const createPost = async(post) => {
+            const createPostPromise =  new Promise((resolve, reject) => {
+            setTimeout(() => {
+                    //posts.push(post);
+                    const error = false;
+                    if (!error) {
+                        resolve(posts.push({ ...post, createdAt: new Date().getTime() }))
+                    } 
+                    else {
+                        reject("something went wrong");
+                    }
+                })
+            },1000);
+
+            let postCreate = await createPostPromise;
+            return postCreate;
+        }
+
+        const deletePost = async(post) => {
+            const deletePostPromise = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                    let error = false;
+                    if (posts.length === 0) {
+                        error = true;
+                    }
+                    if (!error) {
+                        resolve(posts.pop());
+                    } else {
+                        reject("Error: Array is empty now!");
+                    }
+                },2000);
+            });
+
+            let deletePost = await deletePostPromise;
+            return deletePost;
+        }
+        function create4thPost(){
+            createPost({title:"Post 4", body:"this  is 4 post"})
+            .then(getPosts)
+            .then(deletePost).then(getPosts)
+        }
+
+        createPost({ title: "Post 1", body: "this is 1 post" }) 
+        .then(getPosts)
+        .catch((err) => console.log(err));
+
+        createPost({ title: "Post 2", body: "this is 2 post" }) 
+        .then(getPosts)
+        .catch((err) => console.log(err));
+
+        createPost({ title: "Post 3", body: "this is 3 post" }) 
+        .then(getPosts)
+        .catch((err) => console.log(err));
+
+        deletePost().then(getPosts).catch((err) => console.log(err));
+        deletePost().then(getPosts).catch((err) => console.log(err))
+        deletePost().then(getPosts).catch((err) => console.log(err)).then(create4thPost)
+    
+        
+    </script>
+</html>
