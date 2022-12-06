@@ -1,0 +1,18 @@
+<html>
+    <body> 
+        <form  onsubmit="saveToCloudStorage(event)">
+            <label> Name</label>
+            <input id='username' type="text" name="name"  required/>
+            <label> EmailId</label>
+            <input id='emailid' type="email" name="email"  required/>
+            <label> Phone Number</label>
+            <input id='phonenumber' type="tel" name="phonenumber" />
+            <button> Submit </button>
+        </form>
+        <ul id='listofUsers'></ul>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.4.1/axios.min.js"></script>
+        <script src="FinalBookAppointment.js" >
+        </script>
+
+    </body>
+</html>
